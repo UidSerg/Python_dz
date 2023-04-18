@@ -23,7 +23,7 @@ max_value = min(massiv)
 if max(massiv) < chek:
     print(f"Самый близкий по величине элемент {max(massiv)}")
 else:
-    for i in range(n-1):
+    for i in range(n):
         if abs(chek-massiv[i]) < abs(chek-max_value):
             max_value = massiv[i]
     print(f"Самый близкий по величине элемент {max_value}")
