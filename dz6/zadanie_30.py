@@ -13,3 +13,10 @@ result = list()
 for i in range(count):
     result.append(first_namber+razn*i)
 print(result)
+
+# эталонное решение
+# a1 = int(input())
+# d = int(input())
+# n = int(input())
+# for i in range(n):
+#     print(a1 + i * d) # Ну да можно и сразу печать)

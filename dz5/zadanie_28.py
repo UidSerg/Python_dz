@@ -7,12 +7,22 @@
 # *Пример:*
 # 2 2 ->    4
 
-def sum(a: int) -> int:
-     """функция возвращает сумму двух целых неотрицательных чисел a и b.Без циклов, только +/-1"""
-     if a == 0:
-         return a
-     return 1+sum(a-1)
+# def sum(a: int) -> int:
+#      """функция возвращает сумму двух целых неотрицательных чисел a и b.Без циклов, только +/-1"""
+#      if a == 0:
+#          return a
+#      return 1+sum(a-1)
 
-a = int(input("Введите число  A:"))
-b = int(input("Введите число  B:"))
-print(sum(a)+sum(b))
+# a = int(input("Введите число  A:"))
+# b = int(input("Введите число  B:"))
+# print(sum(a)+sum(b))
+
+# требовалось так: прибавляем 1 к второму числу пока первое не обнулится
+def recursive_sum(a, b):
+    if a == 0:
+        return b
+    return recursive_sum(a - 1, b + 1)
+    
+a = int(input("Введите первое неотрицительное число "))
+b = int(input("Введите второе неотрицательно число "))
+print(recursive_sum(a, b))
