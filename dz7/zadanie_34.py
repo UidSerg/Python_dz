@@ -17,16 +17,23 @@
 '''
 
 massiv = ['а','е','ё','и','й','о','у','э','ы','ю','я'] # гласные
-
+'''
 def slog(str):
     sum = 0
     for i in range(len(str)):
         if str[i] in massiv: # если буква есть в списке +счетчик
             sum = sum+1    
     return sum
+'''
+def aaaaa(str):
+    if str in massiv:
+        sum= sum+1
+    return sum
+def slog(str):
+    return set(map(aaaaa, str))
 
 fraza = input('Фраза Винни:').split()
-if len(set(map(slog, fraza))) == 1:
+if len(set(map(slog, fraza))) == 1 and list(map(slog, fraza))[0] !=0:
     print("Парам пам-пам")
 else:
     print("Пам парам") 

@@ -29,4 +29,4 @@ def print_operation_table(operation, num_rows, num_columns):
 
 num_rows = int(input('Введите число строк:'))
 num_columns = int(input('Введите число столбцов:'))
-matrix = print_operation_table((lambda x, y: x * y), num_rows,num_columns)
+print_operation_table((lambda x, y: x * y), num_rows, num_columns)
