@@ -21,46 +21,98 @@ def read_records():
 
 
 def show_all():
+    """Вывод списка контактов"""
     if all_data:
         print(*all_data, sep="\n")
     else:
         print("Empty data")
 
 def add_contact():
+    """Добавляем контакт в конце списка"""
     last_name = input("Введите Фамилию:")
     name = input("Введите Имя:")
     father_name = input("Введите Отчество:")
     phone = int(input("Телефон:"))
     with open(file_base, "a", encoding="utf-8") as f:
-        if name and phone:
-            f.write(f'{last_id+1} {name} {last_name} {father_name} {phone}\n')
+        if last_name and name and father_name and phone:
+            f.write(f'{last_id+1} {last_name} {name} {father_name} {phone}\n')
+##____add_contact_____________END
 
-def search():
+def search_func(book: list, poisk: str) -> list[str]:
+    """Находит в списке записи по определенному критерию поиска"""
+    return list(filter(lambda contact: poisk.lower() in contact.lower(), book))
+
+##____search_func_____________END
+
+       
+def change():
     object_search = input("введите данные для поиска:  ")
-    if object_search.isnumeric() == True:
-        print('это тел')
-        with open(file_base, "r", encoding="utf-8") as f:
-            sum = 0
-            for line in f:
-                if(line.split()[-1]) == object_search:
-                    print(line)
-                    sum = sum + 1
-            if sum == 0:
-                print(f'Телефон:{object_search} не найден')
-        f.close()
+    result = search_func(all_data, object_search)
+    count = len(result)
+    if count == 0:
+        print('Ничего не найдено по вашему запросу')
+    if count == 1:
+        start = int(result[0].split()[0])
+    if count > 1:
+        for i in range(count):
+            print(f'{i+1}.[{result[i]}]')
+        new_search = int(input("Уточните какой контакт хотите изменить?: "))
+        if new_search > 0 and count+1 > new_search:
+            print(f'Изменяем [{result[new_search-1]}]')
+            start = int(result[new_search-1].split()[0])
+        else:
+            print("Указано неверноe значение для редактирования") 
+            
+        last_name = input("Введите Фамилию:")
+        name = input("Введите Имя:")
+        father_name = input("Введите Отчество:")
+        phone = int(input("Телефон:"))
+        all_data[start-1] = str(f'{all_data[start-1].split()[0]} {last_name} {name} {father_name} {phone}')
+        with open(file_base, 'w', encoding='utf-8') as f:
+            for i in range(len(all_data)):
+                with open(file_base, 'a', encoding='utf-8') as f:
+                    f.write(f'{all_data[i]}\n') 
+            print(f'Запись Изменена {all_data}')
+##____change_____________END
+ 
+
+def delete_contact():
+    '''Удаление контакта''' 
+    object_search = input("Введите что удаляем?: ")
+    result = search_func(all_data, object_search)
+    count = len(result)
+    if count == 0:
+        print('Ничего не найдено!')
+    if count == 1:
+        start = int(result[0].split()[0])
+        del_func(start, all_data)
     else:
-        with open(file_base, "r", encoding="utf-8") as f:
-            sum = 0
-            for line in f:
-                search_fio = line.split()
-                result = map(str, search_fio) 
-                result = list(filter(lambda x: x == object_search, result))
-                if result:
-                    print(line)
-                    sum = sum +1
-            if sum == 0:
-                print('Не найдено!')
-        f.close()        
+        for i in range(count):
+            print(f'{i+1}.[{result[i]}]')
+        new_search = int(input("Уточните какой контакт хотите удалить?: "))
+        if new_search > 0 and count+1 > new_search:
+            print(f'Удаляем [{result[new_search-1]}]')
+            start = int(result[new_search-1].split()[0])
+            del_func(start, all_data)
+        else:
+            print("Указано неверноe значение для удаления")
+            
+##____delete_contact_____________END         
+
+def del_func(start: int, all_data: list):        
+    with open(file_base, 'w', encoding='utf-8') as f:
+        for i in range(start-1):
+            with open(file_base, 'a', encoding='utf-8') as f:
+                f.write(f'{all_data[i]}\n') 
+    for i in range(start, len(all_data)):
+        with open(file_base, 'a', encoding='utf-8') as f:
+            numeric=int(all_data[i].split()[0])
+            line= str(all_data[i])
+            srez = line[len(str(numeric)):] 
+            srez = str(numeric-1)+srez
+            f.write(f'{srez}\n')
+    print(f'Удалено!!!')  
+##____del_func_____________END
 
 def main_menu():
     play = True
@@ -80,11 +132,16 @@ def main_menu():
             case "2":
                 add_contact()
             case "3":
-                search()
+                object_search = input("введите данные для поиска:  ")
+                result = search_func(all_data, object_search)
+                for i in range(len(result)):
+                    print(result[i])
             case "4":
-                pass
+                play = False
+                change()
             case "5":
                 play = False
+                delete_contact()
             case "6":
                 pass
             case "7":

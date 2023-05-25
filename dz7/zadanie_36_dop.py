@@ -20,7 +20,11 @@
 5 10 15 20 25 30
 6 12 18 24 30 36
 '''
-
+'''
+def show_table(table: list[list[int]]) -> None:
+    '''Просто красиво печает матрицу).'''
+    print('\n'.join('\t'.join(map(str, row)) for row in table))
+'''
 def print_operation_table(operation, num_rows, num_columns):
     for i in range(1, num_rows+1):
         for j in range(1, num_columns+1):
