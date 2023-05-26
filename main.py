@@ -1,4 +1,6 @@
 from os import path
+import shutil
+import os
 
 file_base = "base.txt"
 last_id = 0
@@ -46,22 +48,23 @@ def search_func(book: list, poisk: str) -> list[str]:
 
        
 def change():
+    """Изменение контакта"""
     object_search = input("введите данные для поиска:  ")
     result = search_func(all_data, object_search)
     count = len(result)
     if count == 0:
         print('Ничего не найдено по вашему запросу')
-    if count == 1:
+    elif count == 1:
         start = int(result[0].split()[0])
-    if count > 1:
-        for i in range(count):
-            print(f'{i+1}.[{result[i]}]')
-        new_search = int(input("Уточните какой контакт хотите изменить?: "))
-        if new_search > 0 and count+1 > new_search:
-            print(f'Изменяем [{result[new_search-1]}]')
-            start = int(result[new_search-1].split()[0])
-        else:
-            print("Указано неверноe значение для редактирования") 
+        if count > 1:
+            for i in range(count):
+                print(f'{i+1}.[{result[i]}]')
+            new_search = int(input("Уточните какой контакт хотите изменить?: "))
+            if new_search > 0 and count+1 > new_search:
+                print(f'Изменяем [{result[new_search-1]}]')
+                start = int(result[new_search-1].split()[0])
+            else:
+                print("Указано неверноe значение для редактирования") 
             
         last_name = input("Введите Фамилию:")
         name = input("Введите Имя:")
@@ -72,7 +75,7 @@ def change():
             for i in range(len(all_data)):
                 with open(file_base, 'a', encoding='utf-8') as f:
                     f.write(f'{all_data[i]}\n') 
-            print(f'Запись Изменена {all_data}')
+            print(f'Запись Изменена!')
 ##____change_____________END
  
 
@@ -99,7 +102,8 @@ def delete_contact():
             
 ##____delete_contact_____________END         
 
-def del_func(start: int, all_data: list):        
+def del_func(start: int, all_data: list):
+    """удаление"""        
     with open(file_base, 'w', encoding='utf-8') as f:
         for i in range(start-1):
             with open(file_base, 'a', encoding='utf-8') as f:
@@ -113,6 +117,12 @@ def del_func(start: int, all_data: list):
             f.write(f'{srez}\n')
     print(f'Удалено!!!')  
 ##____del_func_____________END
+
+def export():
+    print('выберите директорию')
+    print(os.getcwd())
+    print(os.path.abspath('base.txt'))
+
 
 def main_menu():
     play = True
@@ -143,7 +153,7 @@ def main_menu():
                 play = False
                 delete_contact()
             case "6":
-                pass
+                export()
             case "7":
                 pass
             case _:
